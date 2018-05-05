@@ -1,0 +1,8 @@
+{
+  "author" : "Xilosc",
+  "description" : "Adds a Manufacturing Station to work with FU.",
+  "friendlyName" : "Manufacturing Station FU",
+  "includes" : ["FrackinUniverse"],
+  "name" : "ManufacturingStation",
+  "version" : "1.0"
+}

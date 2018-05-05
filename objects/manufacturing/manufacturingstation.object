@@ -1,0 +1,94 @@
+{
+  "objectName" : "manufacturingstation",
+  "colonyTags" : [ "machines" ],
+  "printable" : false,
+  "rarity" : "essential",
+  "description" : "An assembly line for processing raw materials into finished products.",
+  "shortdescription" : "^orange;Manufacturing Station^reset;",
+  "subtitle" : "...",
+  "race" : "generic",
+  "category" : "crafting",
+  "price" : 14000,
+  "objectType" : "container",
+  "hydrophobic" : false,
+  "rooting" : true,
+  "inventoryIcon" : "manufacturingstationicon.png",
+
+  "lightColor" : [62, 89, 89],
+
+  "flickerPeriod" : 0.5,
+  "flickerMinIntensity" : 0.9,
+  "flickerMaxIntensity" : 1,
+  "flickerPeriodVariance" : 0.0,
+  "flickerIntensityVariance" : 0,
+
+  "orientations" : [
+    {
+      "imageLayers" : [ { "image" : "manufacturingstation.png:<color>.<frame>", "fullbright" : true }, { "image" : "manufacturingstationlit.png:<color>.<frame>" } ],
+      "imagePosition" : [0, 0],
+
+      "direction" : "left",
+      "flipImages" : true,
+
+      "frames" : 22,
+      "animationCycle" : 1.8,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    },
+
+    {
+      "imageLayers" : [ { "image" : "manufacturingstation.png:<color>.<frame>", "fullbright" : true }, { "image" : "manufacturingstationlit.png:<color>.<frame>" } ],
+      "imagePosition" : [0, 0],
+
+      "direction" : "right",
+
+      "frames" : 22,
+      "animationCycle" : 1.8,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    }
+  ],
+
+  "animation" : "/objects/manufacturing/manufacturingstation.animation",
+"animationParts" : {
+  "samplingarrayanim" : "manufacturingstation.png"
+},
+
+  "scripts" : [ "/objects/manufacturing/manufacturingstation.lua",
+                "/scripts/npcToyObject.lua",
+                "/scripts/power.lua","/objects/isn_sharedobjectscripts.lua"],
+  "scriptDelta" : 30,
+  "recipeGroup" : "manufacturingstation",
+  "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
+  "slotCount" : 16,
+  "uiConfig" : "/interface/manufacturingstation.config",
+  "frameCooldown" : 67,
+  "autoCloseCooldown" : 3600,
+
+  "inputNodes" : [ [0, 1] ],
+  "outputNodes" : [ [0, 0] ],
+
+  "powertype" : "input",
+  "isn_requiredPower" : 40,
+
+
+  "npcToy" : {
+    "influence" : [
+      "sink",
+      "sinkComplete"
+    ],
+    "defaultReactions" : {
+      "sink" : [
+        [1.0, "crouchcollect"]
+      ],
+      "sinkComplete" : [
+        [1.0, "smile"]
+      ]
+    },
+    "preciseStandPositionLeft" : [-1.0, 0.0],
+    "preciseStandPositionRight" : [1.0, 0.0],
+    "maxNpcs" : 2
+  }
+}
