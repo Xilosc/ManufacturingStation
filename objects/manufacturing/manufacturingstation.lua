@@ -1,6 +1,9 @@
 require "/scripts/fu_storageutils.lua"
 require "/scripts/KheAA/transferUtil.lua"
-require "/scripts/power.lua"
+require '/scripts/power.lua' -- POWERTEST
+
+-- search "POWERTEST" to see lines added for power.
+-- commenting out those lines should have the station functioning without power.
 
 -- list of items to exlude from prototyping
 local exclusionList = {
@@ -45,9 +48,11 @@ local exclusionList = {
 
 
 local deltaTime = 0
+local requiredPower = 0
 
 function init()
-    power.init()
+    power.init() -- POWERTEST
+    requiredPower = config.getParameter('isn_requiredPower')
     transferUtil.init()
     self.timer = 1
     self.mintick = 1
@@ -76,6 +81,7 @@ end
 function scanRecipes(sample)
   local recipeScan = root.recipesForItem(sample.name)
   local recipes={}
+
       if recipeScan then
         for n = 1,#recipeScan do
           local recipeInputs = {recipeScan[n].input}
@@ -134,17 +140,6 @@ end
 end
 
 
-
---[[function exclusion(prototype)
---  local prototype = world.containerItemAt(entity.id(), 0)
-  for i=1,#exclusionList do sb.logInfo("List item: %s, Prototype.name:", exclusionList[i], prototype.name)
-    if exlusionList[i] == prototype.name then return false
-    end
-  end
-  return true
-end]]
-
-
 function getOutSlotsFor(something)
     local empty = {} -- empty slots in the outputs
     local slots = {} -- slots with a stack of "something"
@@ -169,15 +164,19 @@ end
 
 function update(dt)
   if not deltaTime or (deltaTime > 1) then
-		deltaTime=0
+local	deltaTime=0
 		transferUtil.loadSelfContainer()
 	else
 		deltaTime=deltaTime+dt
+    sb.logInfo("deltaTime %s", deltaTime)
 	end
 
     self.timer = self.timer - dt
+    sb.logInfo("self.timer %s", self.timer)
     if self.timer <= 0 then
         if self.crafting then
+        local powerCons =  power.consume(config.getParameter('isn_requiredPower')) sb.logInfo("powerCons %s", powerCons) -- POWERTEST
+          if powerCons then-- POWERTEST
             for k,v in pairs(self.output) do
                 local leftover = {name = k, count = v}
                 local slots = getOutSlotsFor(k)
@@ -191,33 +190,35 @@ function update(dt)
                 if leftover ~= nil then
                     world.spawnItem(leftover.name, entity.position(), leftover.count)
                 end
+              end
             end
             self.crafting = false
             self.output = {}
             self.timer = self.mintick --reset timer to a safe minimum
             animator.setAnimationState("samplingarrayanim", "idle")
+          end -- POWERTEST
         end
 
-        if not self.crafting and self.timer <= 0 then --make sure we didn't just finish crafting
+          if not self.crafting and self.timer <= 0 then --make sure we didn't just finish crafting
             local slot0 = world.containerItemAt(entity.id(), 0)
-            if slot0 then
-            if not exclusionList[slot0.name] and power.getTotalEnergy() >= config.getParameter("isn_requiredPower", 1) then
-            if not startCrafting(getValidRecipes(getInputContents())) then self.timer = self.mintick end --set timeout if there were no recipes
+            if slot0 then sb.logInfo("slot0: %s", slot0)
+              if not exclusionList[slot0.name] then
+                if power.getTotalEnergy() >= config.getParameter('isn_requiredPower') then -- POWERTEST
+                  if not startCrafting(getValidRecipes(getInputContents())) then self.timer = self.mintick end --set timeout if there were no recipes
+                end -- POWERTEST
+              end
+            end
         end
-      end
-    end
-  end
-  power.update(dt)
+  power.update(dt) -- POWERTEST
 end
 
---if power.getTotalEnergy() >= config.getParameter("isn_requiredPower", 1) and power.consume(config.getParameter("isn_requiredPower", 1)*result.time) then
 
 function startCrafting(result)
     if next(result) == nil then return false
     else _,result = next(result)
 
         for k,v in pairs(result.inputs) do
-        if not world.containerConsume(entity.id(), {item = k , count = v}) and power.consume(config.getParameter("isn_requiredPower", 1)*result.time) then return false end
+        if not world.containerConsume(entity.id(), {item = k , count = v}) then return false end
         end
 
         self.crafting = true
