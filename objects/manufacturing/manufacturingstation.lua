@@ -1,6 +1,10 @@
 require "/scripts/fu_storageutils.lua"
 require "/scripts/KheAA/transferUtil.lua"
+<<<<<<< HEAD
 require '/scripts/power.lua' -- POWERTEST
+=======
+require "/scripts/power.lua" -- POWERTEST
+>>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
 
 -- search "POWERTEST" to see lines added for power.
 -- commenting out those lines should have the station functioning without power.
@@ -52,7 +56,10 @@ local requiredPower = 0
 
 function init()
     power.init() -- POWERTEST
+<<<<<<< HEAD
     requiredPower = config.getParameter('isn_requiredPower')
+=======
+>>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
     transferUtil.init()
     self.timer = 1
     self.mintick = 1
@@ -81,7 +88,11 @@ end
 function scanRecipes(sample)
   local recipeScan = root.recipesForItem(sample.name)
   local recipes={}
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
       if recipeScan then
         for n = 1,#recipeScan do
           local recipeInputs = {recipeScan[n].input}
@@ -175,8 +186,12 @@ local	deltaTime=0
     sb.logInfo("self.timer %s", self.timer)
     if self.timer <= 0 then
         if self.crafting then
+<<<<<<< HEAD
         local powerCons =  power.consume(config.getParameter('isn_requiredPower')) sb.logInfo("powerCons %s", powerCons) -- POWERTEST
           if powerCons then-- POWERTEST
+=======
+          if power.consume(config.getParameter('isn_requiredPower')) then -- POWERTEST
+>>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
             for k,v in pairs(self.output) do
                 local leftover = {name = k, count = v}
                 local slots = getOutSlotsFor(k)

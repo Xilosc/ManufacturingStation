@@ -56,7 +56,13 @@
   "samplingarrayanim" : "manufacturingstation.png"
 },
 
+<<<<<<< HEAD
   "scripts" : [ "/scripts/power.lua","/objects/manufacturing/manufacturingstation.lua", "/scripts/npcToyObject.lua"],
+=======
+  "scripts" : [ "/objects/manufacturing/manufacturingstation.lua",
+                "/scripts/npcToyObject.lua",
+                "/scripts/power.lua"],
+>>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
   "scriptDelta" : 30,
   "recipeGroup" : "manufacturingstation",
   "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
