@@ -1,9 +1,9 @@
 {
-  "objectName" : "manufacturingstation",
+  "objectName" : "mfgstation",
   "colonyTags" : [ "machines" ],
   "printable" : false,
   "rarity" : "essential",
-  "description" : "An assembly line for processing raw materials into finished products.",
+  "description" : "An assembly line for processing raw materials into finished products.\nRequires ^orange;40W ^cyan;power.^reset;",
   "shortdescription" : "^orange;Manufacturing Station^reset;",
   "subtitle" : "",
   "race" : "generic",
@@ -12,7 +12,7 @@
   "objectType" : "container",
   "hydrophobic" : false,
   "rooting" : true,
-  "inventoryIcon" : "manufacturingstationicon.png",
+  "inventoryIcon" : "mfgstationicon.png",
 
   "lightColor" : [62, 89, 89],
 
@@ -24,7 +24,7 @@
 
   "orientations" : [
     {
-      "imageLayers" : [ { "image" : "manufacturingstation.png:<color>.<frame>", "fullbright" : true }, { "image" : "manufacturingstationlit.png:<color>.<frame>" } ],
+      "imageLayers" : [ { "image" : "mfgstation.png:<color>.<frame>", "fullbright" : true }, { "image" : "mfgstationlit.png:<color>.<frame>" } ],
       "imagePosition" : [0, 0],
 
       "direction" : "left",
@@ -38,7 +38,7 @@
     },
 
     {
-      "imageLayers" : [ { "image" : "manufacturingstation.png:<color>.<frame>", "fullbright" : true }, { "image" : "manufacturingstationlit.png:<color>.<frame>" } ],
+      "imageLayers" : [ { "image" : "mfgstation.png:<color>.<frame>", "fullbright" : true }, { "image" : "mfgstationlit.png:<color>.<frame>" } ],
       "imagePosition" : [0, 0],
 
       "direction" : "right",
@@ -51,18 +51,18 @@
     }
   ],
 
-  "animation" : "/objects/manufacturing/manufacturingstation.animation",
+  "animation" : "/objects/manufacturing/mfgstation.animation",
 "animationParts" : {
-  "samplingarrayanim" : "manufacturingstation.png"
+  "samplingarrayanim" : "mfgstation.png"
 },
 
 
-  "scripts" : [ "/scripts/power.lua","/objects/manufacturing/manufacturingstation.lua", "/scripts/npcToyObject.lua"],
+  "scripts" : [ "/scripts/power.lua","/objects/manufacturing/mfgstation.lua", "/scripts/npcToyObject.lua"],
   "scriptDelta" : 30,
-  "recipeGroup" : "manufacturingstation",
+  "recipeGroup" : "mfgstation",
   "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
   "slotCount" : 16,
-  "uiConfig" : "/interface/manufacturingstation.config",
+  "uiConfig" : "/interface/mfgstation.config",
   "frameCooldown" : 67,
   "autoCloseCooldown" : 3600,
 

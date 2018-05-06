@@ -119,7 +119,7 @@ end
 function getValidRecipes(query)
   local slot0 = world.containerItemAt(entity.id(), 0)
     if slot0 then
-        local recipes = scanRecipes(slot0) --sb.logInfo("recipes: %s", recipes)
+        local recipes = scanRecipes(slot0) sb.logInfo("recipes: %s", recipes)
         local function subset(t1,t2)
           if next(t2) == nil then
             return false
