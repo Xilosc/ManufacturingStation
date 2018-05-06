@@ -1,10 +1,6 @@
 require "/scripts/fu_storageutils.lua"
 require "/scripts/KheAA/transferUtil.lua"
-<<<<<<< HEAD
-require '/scripts/power.lua' -- POWERTEST
-=======
 require "/scripts/power.lua" -- POWERTEST
->>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
 
 -- search "POWERTEST" to see lines added for power.
 -- commenting out those lines should have the station functioning without power.
@@ -56,10 +52,7 @@ local requiredPower = 0
 
 function init()
     power.init() -- POWERTEST
-<<<<<<< HEAD
     requiredPower = config.getParameter('isn_requiredPower')
-=======
->>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
     transferUtil.init()
     self.timer = 1
     self.mintick = 1
@@ -88,11 +81,7 @@ end
 function scanRecipes(sample)
   local recipeScan = root.recipesForItem(sample.name)
   local recipes={}
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
       if recipeScan then
         for n = 1,#recipeScan do
           local recipeInputs = {recipeScan[n].input}
@@ -130,7 +119,7 @@ end
 function getValidRecipes(query)
   local slot0 = world.containerItemAt(entity.id(), 0)
     if slot0 then
-        local recipes = scanRecipes(slot0) sb.logInfo("recipes: %s", recipes)
+        local recipes = scanRecipes(slot0) --sb.logInfo("recipes: %s", recipes)
         local function subset(t1,t2)
           if next(t2) == nil then
             return false
@@ -179,19 +168,15 @@ local	deltaTime=0
 		transferUtil.loadSelfContainer()
 	else
 		deltaTime=deltaTime+dt
-    sb.logInfo("deltaTime %s", deltaTime)
+    --sb.logInfo("deltaTime %s", deltaTime)
 	end
 
     self.timer = self.timer - dt
-    sb.logInfo("self.timer %s", self.timer)
+    --sb.logInfo("self.timer %s", self.timer)
     if self.timer <= 0 then
         if self.crafting then
-<<<<<<< HEAD
-        local powerCons =  power.consume(config.getParameter('isn_requiredPower')) sb.logInfo("powerCons %s", powerCons) -- POWERTEST
+          local powerCons = power.consume(config.getParameter('isn_requiredPower')) --sb.logInfo("powerCons %s", powerCons) -- POWERTEST
           if powerCons then-- POWERTEST
-=======
-          if power.consume(config.getParameter('isn_requiredPower')) then -- POWERTEST
->>>>>>> e971c9f44bc0b93d269e705252335c5cd416f156
             for k,v in pairs(self.output) do
                 local leftover = {name = k, count = v}
                 local slots = getOutSlotsFor(k)
@@ -216,9 +201,10 @@ local	deltaTime=0
 
           if not self.crafting and self.timer <= 0 then --make sure we didn't just finish crafting
             local slot0 = world.containerItemAt(entity.id(), 0)
-            if slot0 then sb.logInfo("slot0: %s", slot0)
+            if slot0 then --sb.logInfo("slot0: %s", slot0)
               if not exclusionList[slot0.name] then
-                if power.getTotalEnergy() >= config.getParameter('isn_requiredPower') then -- POWERTEST
+                  local totalEnergy = power.getTotalEnergy() --sb.logInfo("totalEnergy %s", totalEnergy)
+                if totalEnergy >= requiredPower then -- POWERTEST
                   if not startCrafting(getValidRecipes(getInputContents())) then self.timer = self.mintick end --set timeout if there were no recipes
                 end -- POWERTEST
               end
