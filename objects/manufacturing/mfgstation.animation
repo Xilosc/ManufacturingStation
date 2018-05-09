@@ -5,8 +5,8 @@
         "default" : "idle",
         "states" : {
           "working" : {
-            "frames" : 21,
-            "cycle" : 1.8,
+            "frames" : 11,
+            "cycle" : 1,
             "mode" : "loop"
           },
           "idle" : {

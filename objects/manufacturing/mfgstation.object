@@ -2,7 +2,7 @@
   "objectName" : "mfgstation",
   "colonyTags" : [ "machines" ],
   "printable" : false,
-  "rarity" : "essential",
+  "rarity" : "rare",
   "description" : "An assembly line for processing raw materials into finished products.\nRequires ^orange;40W ^cyan;power.^reset;",
   "shortdescription" : "^orange;Manufacturing Station^reset;",
   "subtitle" : "",
@@ -30,8 +30,8 @@
       "direction" : "left",
       "flipImages" : true,
 
-      "frames" : 22,
-      "animationCycle" : 1.8,
+      "frames" : 12,
+      "animationCycle" : 1,
 
       "spaceScan" : 0.1,
       "anchors" : [ "bottom" ]
@@ -43,8 +43,8 @@
 
       "direction" : "right",
 
-      "frames" : 22,
-      "animationCycle" : 1.8,
+      "frames" : 12,
+      "animationCycle" : 1,
 
       "spaceScan" : 0.1,
       "anchors" : [ "bottom" ]
