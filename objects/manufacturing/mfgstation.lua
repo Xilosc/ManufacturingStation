@@ -1,12 +1,13 @@
 require "/scripts/fu_storageutils.lua"
 require "/scripts/KheAA/transferUtil.lua"
-require "/scripts/power.lua" -- POWERTEST
+require "/scripts/power.lua"
 
 -- search "POWERTEST" to see lines added for power.
 -- commenting out those lines should have the station functioning without power.
 
 -- list of items to exlude from prototyping
 local exclusionList = {
+  liquid=true,
   copperbar=true,
   ironbar=true,
   silverbar=true,
@@ -51,7 +52,7 @@ local deltaTime = 0
 local requiredPower = 0
 
 function init()
-    power.init() -- POWERTEST
+    power.init()
     requiredPower = config.getParameter('isn_requiredPower')
     transferUtil.init()
     self.timer = 1
@@ -82,25 +83,30 @@ function scanRecipes(sample)
   local recipeScan = root.recipesForItem(sample.name)
   local recipes={}
 
-      if recipeScan then
+      if recipeScan then --sb.logInfo("RecipeScan: %s", recipeScan)
         for n = 1,#recipeScan do
-          local recipeInputs = {recipeScan[n].input}
-          local recipeOutput = {recipeScan[n].output}
-          local recipeTime = recipeScan[n].duration
-          local sampleInputs = {}
-          local sampleOutput = {}
-          local stackOut = recipeOutput[1]
-          sampleOutput[stackOut.name] = stackOut.count
+            local recipeInputs = {recipeScan[n].input}
+            local recipeOutput = {recipeScan[n].output}
+            local recipeTime = recipeScan[n].duration
+            local sampleInputs = {}
+            local sampleOutput = {}
+            local stackOut = recipeOutput[1]
+            sampleOutput[stackOut.name] = stackOut.count
+            if recipeScan[n].currencyInputs then --sb.logInfo("recipeScan[n].currencyInputs: %s", recipeScan[n].currencyInputs)
+              sampleInputs = recipeScan[n].currencyInputs --sb.logInfo("sampleInputs if currency: %s", sampleInputs)
+            end
               for i,scanInputs in ipairs(recipeInputs) do
                 for i=1,#scanInputs do
                   local stack = scanInputs[i]
                     sampleInputs[stack.name] = stack.count
                 end
               end
+
             table.insert(recipes, n, {inputs = sampleInputs, outputs = sampleOutput, time = recipeTime })
           end
             return recipes
         end
+
 end
 
 
@@ -119,7 +125,7 @@ end
 function getValidRecipes(query)
   local slot0 = world.containerItemAt(entity.id(), 0)
     if slot0 then
-        local recipes = scanRecipes(slot0) sb.logInfo("recipes: %s", recipes)
+        local recipes = scanRecipes(slot0)  --sb.logInfo("recipes: %s", recipes)
         local function subset(t1,t2)
           if next(t2) == nil then
             return false
@@ -168,15 +174,13 @@ local	deltaTime=0
 		transferUtil.loadSelfContainer()
 	else
 		deltaTime=deltaTime+dt
-    --sb.logInfo("deltaTime %s", deltaTime)
 	end
 
     self.timer = self.timer - dt
-    --sb.logInfo("self.timer %s", self.timer)
     if self.timer <= 0 then
         if self.crafting then
-          local powerCons = power.consume(config.getParameter('isn_requiredPower')) --sb.logInfo("powerCons %s", powerCons) -- POWERTEST
-          if powerCons then-- POWERTEST
+          local powerCons = power.consume(config.getParameter('isn_requiredPower'))
+          if powerCons then
             for k,v in pairs(self.output) do
                 local leftover = {name = k, count = v}
                 local slots = getOutSlotsFor(k)
@@ -196,21 +200,23 @@ local	deltaTime=0
             self.output = {}
             self.timer = self.mintick --reset timer to a safe minimum
             animator.setAnimationState("samplingarrayanim", "idle")
-          end -- POWERTEST
+          end
         end
 
           if not self.crafting and self.timer <= 0 then --make sure we didn't just finish crafting
             local slot0 = world.containerItemAt(entity.id(), 0)
-            if slot0 then --sb.logInfo("slot0: %s", slot0)
-              if not exclusionList[slot0.name] then
-                  local totalEnergy = power.getTotalEnergy() --sb.logInfo("totalEnergy %s", totalEnergy)
-                if totalEnergy >= requiredPower then -- POWERTEST
+            if slot0 then                            --sb.logInfo("slot0: %s", slot0)
+              local type = root.itemType(slot0.name) --sb.logInfo("slot0 type: %s", type)
+              local tags = root.itemTags(slot0.name) --sb.logInfo("slot0 Tags: %s", tags)
+              if not exclusionList[slot0.name] and not exclusionList[type] then
+                local totalEnergy = power.getTotalEnergy() --sb.logInfo("totalEnergy %s", totalEnergy)
+                if totalEnergy >= requiredPower then
                   if not startCrafting(getValidRecipes(getInputContents())) then self.timer = self.mintick end --set timeout if there were no recipes
-                end -- POWERTEST
+                end
               end
             end
-        end
-  power.update(dt) -- POWERTEST
+          end
+  power.update(dt)
 end
 
 
